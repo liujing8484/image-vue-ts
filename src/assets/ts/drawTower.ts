@@ -19,11 +19,16 @@ export class DrawTower {
         this.angle = Math.PI / 6
     }
 
+
     draw() {
         this.data.list.forEach(v => {
             if (v.tower.tStyle == '直线') {
                 this.draw_straight_tower(v)
             } else if (v.tower.tStyle == '耐张') {
+                this.draw_Strain_tower(v);
+            } else if (v.tower.tStyle == '牵引场') {
+                this.draw_Strain_tower(v);
+            } else if (v.tower.tStyle == '张力场') {
                 this.draw_Strain_tower(v);
             }
         })
@@ -47,6 +52,7 @@ export class DrawTower {
         });
     }
 
+    // 绘制直线
     draw_line(param: paramData) {
         this.ctx.beginPath();
         this.ctx.moveTo(param.x1, param.y1);
@@ -55,6 +61,7 @@ export class DrawTower {
         this.ctx.stroke();
         this.ctx.closePath();
     }
+
     // 绘制耐张塔
     draw_Strain_tower(v: TowerPointData) {
         this.draw_line({
@@ -79,4 +86,8 @@ export class DrawTower {
             color: 'black'
         });
     }
+
+    // draw_text(v:TowerPointData){
+    //     this.ctx.
+    // }
 }
