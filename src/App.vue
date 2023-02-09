@@ -1,10 +1,8 @@
 <template>
   <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link> |
-    <router-link to="/smallSite">SmallSite</router-link>
+    <router-link to="/">Home</router-link>
   </nav>
-  <router-view/>
+  <router-view class="view"/>
 </template>
 
 <style lang="scss">
@@ -16,9 +14,16 @@
   color: #2c3e50;
 }
 
+.view {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: -1;
+}
+
 nav {
   padding: 30px;
-
+  z-index: 1;
   a {
     font-weight: bold;
     color: #2c3e50;

@@ -1,6 +1,5 @@
 <template>
-  <div>SmallSite</div>
-  <canvas ref="canvas" style="background: gray"/>
+  <canvas ref="canvas" style="background: darkgrey"/>
 </template>
 
 <script lang="ts">

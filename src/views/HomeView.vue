@@ -1,18 +1,17 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+    <small-site-view/>
   </div>
 </template>
 
 <script lang="ts">
 import {defineComponent} from 'vue';
-import HelloWorld from '@/components/HelloWorld.vue';
+import SmallSiteView from "@/views/SmallSiteView.vue";
 
 export default defineComponent({
   name: 'HomeView',
   components: {
-    HelloWorld,
+    SmallSiteView
   }
 });
 </script>
