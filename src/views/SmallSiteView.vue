@@ -7,6 +7,7 @@ import {onMounted, reactive, ref} from "vue";
 import {get_point_towers, get_size} from "@/http/api";
 import {Points} from "@/types/site";
 import {DrawTower} from "@/assets/ts/drawTower";
+import {DrawLine} from "@/assets/ts/drawLine";
 
 
 export default {
@@ -40,6 +41,7 @@ export default {
       canvas.value.width = data.size.width;
       canvas.value.height = data.size.height;
       new DrawTower(ctx, data).draw();
+      new DrawLine(ctx,data.size).draw();
     })
     return {
       data, canvas

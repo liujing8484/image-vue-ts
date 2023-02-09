@@ -15,7 +15,7 @@ export interface TowerPointData {
     tower: TowerData
 }
 
-interface SizeData {
+export interface SizeData {
     width: number,
     height: number,
     minY: number
