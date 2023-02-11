@@ -1,18 +1,19 @@
 import {PointsData, TowerPointData} from "@/types/site";
-import {draw_circle, draw_line, draw_text} from "@/utils/draw"
+import {draw_circle, draw_line, draw_rectangle, draw_text} from "@/utils/draw"
 
 
 export class DrawTower {
     ctx: CanvasRenderingContext2D
     data: PointsData
     angle: number
+    radius: number
 
     constructor(ctx: CanvasRenderingContext2D, data: PointsData) {
         this.ctx = ctx;
         this.data = data;
         this.angle = Math.PI / 6
+        this.radius = 20
     }
-
 
     draw() {
         this.ctx.translate(50, -50)
@@ -84,11 +85,21 @@ export class DrawTower {
         // 绘制第一个圆形
         draw_circle(this.ctx, {
             x: v.x,
-            y: v.y,
+            y: v.y + this.radius,
             color: 'black',
             lineWidth: 2,
-            radius: 20
+            radius: this.radius
         });
+        // 绘制长方形
+        draw_rectangle(this.ctx, {
+                x: v.x - this.radius - 7,
+                y: v.y + this.radius * 2,
+                width: this.radius * 2 + 14,
+                height: 25,
+                lineWidth: 2,
+                color: 'black'
+            }
+        )
     }
 
     // 绘制文字

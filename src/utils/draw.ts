@@ -1,4 +1,4 @@
-import {ArcData, ContinueLineData, LineData, TextData} from "@/types/draw";
+import {ArcData, ContinueLineData, LineData, RectangleData, TextData} from "@/types/draw";
 
 // 绘制直线
 export const draw_line = (ctx: CanvasRenderingContext2D, param: LineData) => {
@@ -37,6 +37,19 @@ export const draw_continue_line = (ctx: CanvasRenderingContext2D, param: Continu
     }
     ctx.strokeStyle = param.color;
     ctx.lineWidth = param.lineWidth;
+    ctx.stroke();
+    ctx.closePath();
+}
+// 绘制矩形
+export const draw_rectangle = (ctx: CanvasRenderingContext2D, param: RectangleData) => {
+    ctx.beginPath();
+    ctx.moveTo(param.x, param.y);
+    ctx.lineTo(param.x + param.width, param.y);
+    ctx.lineTo(param.x + param.width, param.y + param.height);
+    ctx.lineTo(param.x, param.y + param.height);
+    ctx.lineTo(param.x, param.y);
+    ctx.lineWidth = param.lineWidth;
+    ctx.strokeStyle = param.color
     ctx.stroke();
     ctx.closePath();
 }

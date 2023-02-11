@@ -24,6 +24,15 @@ export interface ArcData {
     radius: number,
 }
 
+export interface RectangleData {
+    x: number,
+    y: number,
+    width:number,
+    height:number,
+    lineWidth: number,
+    color: string
+}
+
 export interface ContinueLineData {
     xs: number[],
     ys: number[],
