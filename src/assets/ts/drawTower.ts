@@ -38,6 +38,7 @@ export class DrawTower {
             y1: v.y,
             x2: v.x + 20,
             y2: v.y,
+            lineWidth: 2,
             color: 'black'
         });
         draw_line(this.ctx, {
@@ -45,10 +46,10 @@ export class DrawTower {
             y1: v.y - 20,
             x2: v.x,
             y2: v.y + 50,
+            lineWidth: 2,
             color: 'black'
         });
     }
-
 
     // 绘制耐张塔
     draw_Strain_tower(v: TowerPointData) {
@@ -57,6 +58,7 @@ export class DrawTower {
             y1: v.y,
             x2: v.x - 20 * Math.cos(this.angle),
             y2: v.y + 20 * Math.sin(this.angle),
+            lineWidth: 2,
             color: 'black'
         });
         draw_line(this.ctx, {
@@ -64,6 +66,7 @@ export class DrawTower {
             y1: v.y,
             x2: v.x + 20 * Math.cos(this.angle),
             y2: v.y + 20 * Math.sin(this.angle),
+            lineWidth: 2,
             color: 'black'
         });
         draw_line(this.ctx, {
@@ -71,6 +74,7 @@ export class DrawTower {
             y1: v.y - 20,
             x2: v.x,
             y2: v.y + 50,
+            lineWidth: 2,
             color: 'black'
         });
     }
@@ -81,6 +85,8 @@ export class DrawTower {
         draw_circle(this.ctx, {
             x: v.x,
             y: v.y,
+            color: 'black',
+            lineWidth: 2,
             radius: 20
         });
     }
@@ -111,7 +117,7 @@ export class DrawTower {
             y: v.y,
             text: `${Math.round(v.tower.altitude)}m`,
             textAlign: "left",
-            font: "normal 12px Consolas",
+            font: "normal 10px Consolas",
             color: '#2D5731'
         })
     }

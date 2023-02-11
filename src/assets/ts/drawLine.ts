@@ -26,7 +26,7 @@ export class DrawLine {
         let n = 0;
         while (this.step * n < this.data.height) {
             const y = this.data.height - n * this.step;
-            draw_line(this.ctx, {x1: 0, y1: y, x2: this.data.width, y2: y, color: 'grey'})
+            draw_line(this.ctx, {x1: 0, y1: y, x2: this.data.width, y2: y, lineWidth: 0.5, color: 'grey'})
             n++;
         }
     }
@@ -36,7 +36,7 @@ export class DrawLine {
         let n = 0;
         while (this.step * n < this.data.width) {
             const x = n * this.step;
-            draw_line(this.ctx, {x1: x, y1: 0, x2: x, y2: this.data.height, color: 'grey'})
+            draw_line(this.ctx, {x1: x, y1: 0, x2: x, y2: this.data.height, lineWidth: 0.5, color: 'grey'})
             n++;
         }
     }

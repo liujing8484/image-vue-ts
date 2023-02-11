@@ -3,6 +3,7 @@ export interface LineData {
     y1: number,
     x2: number,
     y2: number,
+    lineWidth: number,
     color: string,
 }
 
@@ -18,5 +19,14 @@ export interface TextData {
 export interface ArcData {
     x: number,
     y: number,
+    color: string,
+    lineWidth: number,
     radius: number,
+}
+
+export interface ContinueLineData {
+    xs: number[],
+    ys: number[],
+    lineWidth: number,
+    color: string
 }
