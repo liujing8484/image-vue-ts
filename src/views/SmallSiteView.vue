@@ -1,7 +1,9 @@
 <template>
-  <canvas ref="canvas"/>
-  <canvas ref="canvas_across" class="canvas"/>
-  <canvas ref="canvas_curve" class="canvas"/>
+  <div class="container">
+    <canvas ref="canvas" class="canvas"/>
+    <canvas ref="canvas_across" class="canvas"/>
+    <canvas ref="canvas_curve" class="canvas"/>
+  </div>
 </template>
 
 <script lang="ts">
@@ -94,11 +96,14 @@ export default {
 </script>
 
 <style scoped>
-
+.container{
+  position: relative;
+}
 .canvas {
   /*background: red;*/
   position: absolute;
   left: 0;
   top: 0;
+  /*float: left;*/
 }
 </style>
