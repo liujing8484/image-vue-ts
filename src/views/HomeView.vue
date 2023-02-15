@@ -34,14 +34,24 @@
             <Operation/>
           </el-icon>
         </el-menu-item>
+
+        <!--牵引方向-->
+        <el-menu-item index="6">
+          <el-icon class="icon">
+            <SetUp/>
+          </el-icon>
+        </el-menu-item>
+
         <!--计算-->
         <el-menu-item index="3">
           <el-icon class="icon">
             <VideoPlay/>
           </el-icon>
         </el-menu-item>
+
         <!--分割线-->
         <el-divider direction="vertical" class="divider"/>
+
         <!--100%-->
         <el-sub-menu index="1">
           <template #title>100%</template>
@@ -60,57 +70,76 @@
     </el-main>
   </el-container>
 
-  <el-dialog v-model="dialogFormVisible" title="设置" :show-close="false" class="demo-tabs">
+  <!--导线及引绳
+  show-close:false 取消关闭按钮
+  -->
+  <el-dialog v-model="dialogFormVisible" width="400px" title="导线及引绳" :show-close="false" class="demo-tabs">
+
     <!--tabs-->
-    <el-tabs tab-position="left">
-      <el-tab-pane label="导线引绳">
-        <el-form
-            label-position="right"
-            label-width="100px"
-            :model="formLabelAlign"
-            style="max-width: 460px"
-        >
-          <el-form-item label="小引绳">
-            <el-select v-model="value" class="m-2" placeholder="请选择您的引绳">
-              <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-              />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="大引绳">
-            <el-select v-model="value" class="m-2" placeholder="请选择您的引绳">
-              <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-              />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="导线">
-            <el-select v-model="value" class="m-2" placeholder="请选择您的导线">
-              <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-              />
-            </el-select>
-          </el-form-item>
-        </el-form>
-      </el-tab-pane>
-      <el-tab-pane label="牵引顺序">Config</el-tab-pane>
-      <el-tab-pane label="颜色设置">Role</el-tab-pane>
-    </el-tabs>
+    <el-form
+        label-position="right"
+        label-width="100px"
+        :model="formLabelAlign"
+        style="max-width: 460px"
+    >
+      <el-form-item label="小引绳" class="form-item">
+        <el-select v-model="value" class="m-2" placeholder="请选择您的引绳">
+          <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+          />
+        </el-select>
+        <el-color-picker v-model="color" show-alpha/>
+      </el-form-item>
+      <el-form-item label="大引绳" class="form-item">
+        <el-select v-model="value" class="m-2" placeholder="请选择您的引绳">
+          <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+          />
+        </el-select>
+        <el-color-picker v-model="color" show-alpha/>
+      </el-form-item>
+      <el-form-item label="导线" class="form-item">
+        <el-select v-model="value" class="m-2" placeholder="请选择您的导线">
+          <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+          />
+        </el-select>
+        <el-color-picker v-model="color" show-alpha/>
+      </el-form-item>
+    </el-form>
+
 
     <!--footer-->
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取消</el-button>
         <el-button type="primary" @click="dialogFormVisible = false">
+          确定
+        </el-button>
+      </span>
+    </template>
+  </el-dialog>
+
+  <!--牵引方向-->
+  <el-dialog v-model="directionFromVisible" width="400px" title="牵引方向" :show-close="false" class="demo-tabs">
+
+    <!--tabs-->
+
+
+    <!--footer-->
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="directionFromVisible = false">取消</el-button>
+        <el-button type="primary" @click="directionFromVisible = false">
           确定
         </el-button>
       </span>
@@ -131,6 +160,7 @@ export default defineComponent({
   },
   setup() {
     const dialogFormVisible = ref(false)
+    const directionFromVisible = ref(false)
     const formLabelWidth = '140px'
     const value = ref('')
     const form = reactive({
@@ -170,24 +200,27 @@ export default defineComponent({
         label: 'Option5',
       },
     ]
-
+    const color = ref('rgba(19, 206, 102, 0.8)')
     const handleSelect = (key: string, keyPath: string[]) => {
       console.log(key, keyPath);
       if (key == "2") {
         dialogFormVisible.value = true
+      } else if (key == "6") {
+        directionFromVisible.value = true
       }
     }
     return {
       handleSelect,
       dialogFormVisible,
       formLabelWidth,
-      form, formLabelAlign, options, value
+      form, formLabelAlign, options, value, color, directionFromVisible
     }
   }
 });
 </script>
 
 <style scoped>
+
 .header {
   height: 35px;
 }
@@ -199,6 +232,10 @@ export default defineComponent({
 
 .flex-grow {
   flex-grow: 1;
+}
+
+.form-item {
+  margin: 9px 0;
 }
 
 .el-menu-demo {
@@ -215,5 +252,6 @@ export default defineComponent({
   height: 19px;
   margin: 6px 8px;
 }
+
 
 </style>
