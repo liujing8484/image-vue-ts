@@ -37,7 +37,13 @@ export const draw_continue_line = (ctx: CanvasRenderingContext2D, param: Continu
     }
     ctx.strokeStyle = param.color;
     ctx.lineWidth = param.lineWidth;
-    ctx.stroke();
+    if (param.isFill) {
+        ctx.fillStyle = param.color;
+        ctx.fill();
+    } else {
+        ctx.strokeStyle = param.color;
+        ctx.stroke();
+    }
     ctx.closePath();
 }
 // 绘制矩形
@@ -49,7 +55,12 @@ export const draw_rectangle = (ctx: CanvasRenderingContext2D, param: RectangleDa
     ctx.lineTo(param.x, param.y + param.height);
     ctx.lineTo(param.x, param.y);
     ctx.lineWidth = param.lineWidth;
-    ctx.strokeStyle = param.color
-    ctx.stroke();
+    if (param.isFill) {
+        ctx.fillStyle = param.color;
+        ctx.fill();
+    } else {
+        ctx.strokeStyle = param.color;
+        ctx.stroke();
+    }
     ctx.closePath();
 }

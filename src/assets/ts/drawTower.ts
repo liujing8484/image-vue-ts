@@ -97,7 +97,8 @@ export class DrawTower {
                 width: this.radius * 2 + 14,
                 height: 25,
                 lineWidth: 2,
-                color: 'black'
+                color: 'black',
+                isFill: false
             }
         )
     }

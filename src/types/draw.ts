@@ -27,15 +27,17 @@ export interface ArcData {
 export interface RectangleData {
     x: number,
     y: number,
-    width:number,
-    height:number,
+    width: number,
+    height: number,
     lineWidth: number,
-    color: string
+    color: string,
+    isFill: boolean
 }
 
 export interface ContinueLineData {
     xs: number[],
     ys: number[],
     lineWidth: number,
-    color: string
+    color: string,
+    isFill: boolean
 }

@@ -18,7 +18,10 @@ import {DrawAcross} from "@/assets/ts/drawAcross";
 
 export default {
   name: "SmallSiteView",
-  setup() {
+  props: {
+    select_tower: Object
+  },
+  setup(props: any) {
     const data = reactive(new Points());
     const data_curve = reactive(new Points_curve())
     const data_across = reactive(new Points_across())
@@ -35,7 +38,7 @@ export default {
       data.size = res_size.data;
 
       // 通过api获取points_curve
-      const res_curve = await get_point_curve();
+      const res_curve = await get_point_curve(3);
       data_curve.list = res_curve.data;
 
       // 通过api获取points_across
@@ -86,8 +89,9 @@ export default {
       const cxt_curve = canvas_curve.value.getContext('2d');
       canvas_curve.value.width = data.size.width;
       canvas_curve.value.height = data.size.height;
-      new DrawCurve(cxt_curve, data_curve).draw();
+      new DrawCurve(cxt_curve, data_curve, 0).draw();
     })
+    console.log(props.select_tower)
     return {
       data, canvas, canvas_curve, canvas_across
     }
@@ -96,9 +100,10 @@ export default {
 </script>
 
 <style scoped>
-.container{
+.container {
   position: relative;
 }
+
 .canvas {
   /*background: red;*/
   position: absolute;
