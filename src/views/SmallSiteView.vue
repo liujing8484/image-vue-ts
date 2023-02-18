@@ -38,7 +38,7 @@ export default {
       data.size = res_size.data;
 
       // 通过api获取points_curve
-      const res_curve = await get_point_curve(3);
+      const res_curve = await get_point_curve(0);
       data_curve.list = res_curve.data;
 
       // 通过api获取points_across
