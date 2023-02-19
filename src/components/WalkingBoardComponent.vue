@@ -4,7 +4,7 @@ import {getCurrentInstance} from "vue";
 export default {
   name: "WalkingBoardComponent",
   props: {
-    tower: Object
+    selectTower: Object
   },
   setup() {
     const {proxy} = getCurrentInstance() as any;
@@ -29,7 +29,7 @@ export default {
           </el-icon>
         </el-button>
         <div class="center-div">
-          <span>{{ tower.tName }}</span>
+          <span>{{ selectTower.tName }}</span>
         </div>
         <el-button text @click="right">
           <el-icon class="icon">

@@ -36,6 +36,7 @@ export interface CurvePointData {
     w: number,
     xs: string,
     ys: string,
+    str: string,
     id: number,
     bet: BetData
 }
@@ -64,6 +65,10 @@ export class Points {
         height: 0,
         minY: 0
     }
+    list: TowerPointData[] = []
+}
+
+export class Points_tower {
     list: TowerPointData[] = []
 }
 

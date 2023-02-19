@@ -66,15 +66,15 @@
     <!--main-->
     <el-main class="main">
       <el-scrollbar always class="scrollbar">
-        <small-site-view :select_tower="data_tower.select_tower"/>
+        <!--        <small-site-view :select_tower="data_tower.select_tower"/>-->
+        <site-svg-view :selectIndex="selectIndex"/>
       </el-scrollbar>
       <power-component :power="si_power" class="si_power"/>
       <power-component :power="ti_power" class="ti_power"/>
       <direction-component class="direction"/>
-      <walking-board-component :tower="data_tower.select_tower"
-                               @emit_walk="emit_walk"
-                               class="walking-board"/>
+      <walking-board-component :selectTower="selectTower" @emit_walk="emit_walk" class="walking-board"/>
     </el-main>
+
   </el-container>
   <!--导线参数-->
   <wire-form-component v-model="dialogFormVisible" @emit="emit"/>
@@ -89,27 +89,28 @@
 
 <script lang="ts">
 import {defineComponent, onMounted, reactive, toRefs} from 'vue';
-import SmallSiteView from "@/views/SmallSiteView.vue";
+// import SmallSiteView from "@/views/SmallSiteView.vue";
 import SiteDirectionDialogComponent from "@/components/SiteDirectionDialogComponent.vue";
 import WireFormComponent from "@/components/WireFormComponent.vue";
 import FileFormComponent from "@/components/FileFormComponent.vue"
 import PowerComponent from "@/components/PowerComponent.vue"
 import DirectionComponent from "@/components/DirectionComponent.vue"
 import WalkingBoardComponent from "@/components/WalkingBoardComponent.vue"
+import SiteSvgView from "@/views/SiteSvgView.vue"
 import {get_towers} from '@/http/api';
-import {HomeData} from "@/types/home";
-import {TowerData} from "@/types/site";
+import {towers} from "@/types/home";
 
 export default defineComponent({
   name: 'HomeView',
   components: {
     DirectionComponent,
     FileFormComponent,
-    SmallSiteView,
+    // SmallSiteView,
     WireFormComponent,
     SiteDirectionDialogComponent,
     PowerComponent,
-    WalkingBoardComponent
+    WalkingBoardComponent,
+    SiteSvgView
   },
   setup() {
     const state = reactive({
@@ -117,7 +118,17 @@ export default defineComponent({
       directionFromVisible: false,
       fileFormVisible: false,
       formLabelWidth: '140px',
-      data_tower: new HomeData(),
+      selectIndex: 0,
+      towers: new towers(),
+      selectTower: {
+        id: 0,
+        tName: "s",
+        tType: "string",
+        tStyle: "string",
+        corner: "string",
+        altitude: 1000.0,
+        remark: "string"
+      },
       site: {
         title: '小牵张',
         explain: '主要用于展放引绳',
@@ -135,10 +146,10 @@ export default defineComponent({
     })
     onMounted(async () => {
       const res = await get_towers();
-      state.data_tower.lst_tower = res.data;
-      state.data_tower.select_tower = state.data_tower.lst_tower[0];
+      state.towers.list = res.data;
+      state.selectTower = state.towers.list[state.selectIndex]
     })
-    const handleSelect = (key: string, keyPath: string[]) => {
+    const handleSelect = (key: string) => {
       if (key == "2") {
         state.dialogFormVisible = true
       } else if (key == "7-1") {
@@ -152,16 +163,18 @@ export default defineComponent({
       state.directionFromVisible = value;
     }
     const emit_walk = (value: boolean) => {
-      const tower = state.data_tower.lst_tower.find(item => item == state.data_tower.select_tower) as TowerData;
-      let index: number
       if (value) {
-        index = tower.id - 1;
+        if (state.selectIndex > 0) {
+          state.selectIndex--;
+        }
       } else {
-        index = tower.id + 1;
+        if (state.selectIndex < state.towers.list.length - 1) {
+          state.selectIndex++;
+        }
       }
-      const next = state.data_tower.lst_tower.find(item => item.id == index);
-      if (next) {
-        state.data_tower.select_tower = next;
+      console.log(state.selectIndex)
+      if (state.selectIndex >= 0 && state.selectIndex < state.towers.list.length) {
+        state.selectTower = state.towers.list[state.selectIndex]
       }
     }
     return {

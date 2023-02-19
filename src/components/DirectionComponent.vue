@@ -1,38 +1,9 @@
 <script lang="ts">
-import {onMounted, ref} from "vue";
-import {ContinueLineData, LineData} from "@/types/draw";
-import {draw_continue_line, draw_line} from "@/utils/draw";
 
 export default {
   name: "DirectionComponent",
   setup() {
-    const canvas = ref()
-    onMounted(() => {
-      // console.log(canvas.value)
-      canvas.value.width = 83;
-      canvas.value.height = 25;
-      const ctx = canvas.value.getContext('2d');
-      // 绘制直线
-      const line: LineData = {
-        x1: 0,
-        y1: 12.5,
-        x2: 83 - 20,
-        y2: 12.5,
-        lineWidth: 5,
-        color: "#409EFF"
-      }
-      draw_line(ctx, line);
-      // 绘制三角型
-      const conLine: ContinueLineData = {
-        xs: [83, 83 - 25, 83 - 25, 83],
-        ys: [12.5, 0, 25, 12.5],
-        lineWidth: 2,
-        color: "#409EFF",
-        isFill: true
-      }
-      draw_continue_line(ctx, conLine);
-    })
-    return {canvas}
+    return {}
   }
 }
 </script>
@@ -46,7 +17,10 @@ export default {
         </el-icon>
       </div>
       <div class="div-span">
-        <canvas ref="canvas"></canvas>
+        <svg height="25px" width="83px" class="svg">
+          <line x1="0" y1="12.5" x2="63" y2="12.5" class="svg-line"/>
+          <path d="M83 12.5 L58 0 L58 25 Z" class="svg-path"/>
+        </svg>
         <div class="small-border">
           <span class="small-text font-color">牵引方向</span>
         </div>
@@ -112,4 +86,19 @@ export default {
 .font-color {
   color: white;
 }
+
+.svg-line {
+  stroke: #409EFF;
+  stroke-width: 5;
+}
+
+.svg:hover {
+  transform: rotate(-180deg);
+  transform-origin: 50% 50%;
+}
+
+.svg-path {
+  fill: #409EFF;
+}
+
 </style>
