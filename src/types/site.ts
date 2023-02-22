@@ -29,7 +29,8 @@ export interface TowerPointData {
     x: number,
     y: number,
     id: number,
-    tower: TowerData
+    tower: TowerData,
+    si: number
 }
 
 export interface CurvePointData {

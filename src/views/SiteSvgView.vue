@@ -1,11 +1,16 @@
 <script lang="ts">
 import {onMounted, reactive, toRefs, watchEffect} from "vue";
-import {get_point_curve, get_point_towers, get_size} from "@/http/api";
-import {Points_curve, Points_tower} from "@/types/site";
+import {get_point_across_max, get_point_curve, get_point_towers, get_power_tower, get_size} from "@/http/api";
+import {Points_across, Points_curve, Points_tower} from "@/types/site";
+import {PowerTowerInit} from "@/types/power";
+import TowerSvgComponent from "@/components/TowerSvgComponent.vue"
 
 export default {
   name: "SiteSvgView",
   props: {selectIndex: Number},
+  components: {
+    TowerSvgComponent
+  },
   setup(props: any) {
     const state = reactive({
       size: {
@@ -15,9 +20,16 @@ export default {
       },
       points_tower: new Points_tower(),
       points_curve: new Points_curve(),
+      points_across: new Points_across(),
+      power_tower: new PowerTowerInit()
     })
+    const filters_m = (v: number) => {
+      return `${Math.round(v)}m`
+    }
+    const filters_n = (v: number) => {
+      return `${Math.round(v)}N`
+    }
     onMounted(async () => {
-
       // 获取长宽
       const res_size = await get_size();
       state.size = res_size.data;
@@ -29,8 +41,19 @@ export default {
         v.y = -v.y + state.size.height + state.size.minY;
       })
 
+      // 通过api获取points_across
+      const res_across = await get_point_across_max();
+      state.points_across.list = res_across.data;
+      // 对所有的point_across进行操作
+      state.points_across.list.forEach(v => {
+        v.y = -v.y + state.size.height + state.size.minY;
+      })
+
+      // 通过api获取powers_tower
+      // const res_pt = await get_powers_tower();
+      // state.power_tower.list = res_pt.data;
     })
-    watchEffect(async ()=>{
+    watchEffect(async () => {
       // 通过api获取points_curve
       const res_curve = await get_point_curve({index: props.selectIndex});
       state.points_curve.list = res_curve.data;
@@ -57,8 +80,15 @@ export default {
         }
         v.str = str;
       })
+
+      // 将si数据赋值到point_tower中
+      const res_power = await get_power_tower({index: props.selectIndex})
+      const sis = JSON.parse(res_power.data.sis)
+      for (let i = 0; i < state.points_tower.list.length; i++) {
+        state.points_tower.list[i].si = sis[i];
+      }
     })
-    return {...toRefs(state)}
+    return {...toRefs(state), filters_m, filters_n}
   }
 }
 </script>
@@ -66,15 +96,26 @@ export default {
 <template>
 
   <svg :width="size.width" :height="size.height" class="svg">
-    <!--铁塔-->
-    <g v-for="(v,index) in points_tower.list" :key="index">
-      <line :x1="v.x-20" :y1="v.y" :x2="v.x+20" :y2="v.y" class="line"/>
-      <line :x1="v.x" :y1="v.y-20" :x2="v.x" :y2="v.y+50" class="line"/>
+    <tower-svg-component :selectIndex="selectIndex" :size="size"/>
+    <!--控制点-->
+    <g v-for="(v,index) in points_across.list" :key="index">
+      <g v-if="index === 1">
+        <circle :cx="v.x" :cy="v.y" r="12" stroke="red" stroke-width="2" fill="none"/>
+        <text :x="v.x-5.5" :y="v.y+6" class="across-1">1</text>
+      </g>
+      <g v-else class="across-g">
+        <circle :cx="v.x" :cy="v.y" r="8" stroke="blue" stroke-width="2" fill="none"/>
+        <text :x="v.x-4" :y="v.y+4" class="across-2">2</text>
+      </g>
+      <text :x="v.x+15" :y="v.y-5" class="text-across">{{ v.across.acrossName }}</text>
+      <text :x="v.x+15" :y="v.y+5" class="text-across-y">{{ filters_m(v.across.acrossY) }}</text>
     </g>
     <!--引绳曲线-->
     <g v-for="(v,index) in points_curve.list" :key="index">
-      <path :d="v.str" class="path" fill="none"/>
+      <path :d="v.str" class="path-small" v-if="index>=selectIndex" fill="none"/>
+      <path :d="v.str" class="path-big" v-else fill="none"/>
     </g>
+
   </svg>
 
 </template>
@@ -95,14 +136,57 @@ export default {
   cursor: pointer;
 }
 
-.path {
-  stroke: #000;
+.path-small {
   stroke-width: 2;
+  stroke: #000;
 }
 
-.path:hover {
-  stroke: red;
+.path-big {
   stroke-width: 4;
-  cursor: pointer;
+  stroke: #409EFF;
+}
+
+.text {
+  font-family: Consolas;
+  font-size: 12px;
+}
+
+.text-tower {
+  font-size: 14px;
+  font-weight: bold;
+  color: #033B3D;
+}
+
+.text-type {
+  color: #0D4A3A;
+}
+
+.text-altitude {
+  font-size: 10px;
+  color: #2D5731;
+}
+
+.text-across {
+  text-align: left;
+  font-family: Consolas;
+  font-size: 12px;
+  color: #033B3D;
+}
+
+.text-across-y {
+  text-align: left;
+  font-family: Consolas;
+  font-size: 10px;
+  color: #2D5731;
+}
+
+.across-1 {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.across-2 {
+  font-size: 12px;
+  font-weight: bold;
 }
 </style>

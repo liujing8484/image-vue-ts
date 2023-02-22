@@ -26,7 +26,7 @@ export class DrawAcross {
         this.ctx.translate(-50, 50);
     }
 
-    // 绘制控制点
+    // 绘制控制点6
     draw_across(v: AcrossPointData, color: string, radius: number) {
         draw_circle(this.ctx, {x: v.x, y: v.y, color: color, lineWidth: 1, radius: radius});
         draw_circle(this.ctx, {x: v.x, y: v.y, color: color, lineWidth: 1, radius: radius * 2});

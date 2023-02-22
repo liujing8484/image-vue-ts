@@ -172,7 +172,6 @@ export default defineComponent({
           state.selectIndex++;
         }
       }
-      console.log(state.selectIndex)
       if (state.selectIndex >= 0 && state.selectIndex < state.towers.list.length) {
         state.selectTower = state.towers.list[state.selectIndex]
       }
