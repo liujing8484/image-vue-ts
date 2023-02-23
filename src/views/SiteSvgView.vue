@@ -1,15 +1,17 @@
 <script lang="ts">
 import {onMounted, reactive, toRefs, watchEffect} from "vue";
-import {get_point_across_max, get_point_curve, get_point_towers, get_power_tower, get_size} from "@/http/api";
+import {get_point_curve, get_point_towers, get_power_tower, get_size} from "@/http/api";
 import {Points_across, Points_curve, Points_tower} from "@/types/site";
 import {PowerTowerInit} from "@/types/power";
-import TowerSvgComponent from "@/components/TowerSvgComponent.vue"
+import SvgTowerComponent from "@/components/SvgTowerComponent.vue"
+import SvgNumComponent from "@/components/SvgNumComponent.vue"
+import SvgAcrossComponent from "@/components/SvgAcrossComponent.vue"
 
 export default {
   name: "SiteSvgView",
   props: {selectIndex: Number},
   components: {
-    TowerSvgComponent
+    SvgTowerComponent, SvgNumComponent, SvgAcrossComponent
   },
   setup(props: any) {
     const state = reactive({
@@ -41,13 +43,6 @@ export default {
         v.y = -v.y + state.size.height + state.size.minY;
       })
 
-      // 通过api获取points_across
-      const res_across = await get_point_across_max();
-      state.points_across.list = res_across.data;
-      // 对所有的point_across进行操作
-      state.points_across.list.forEach(v => {
-        v.y = -v.y + state.size.height + state.size.minY;
-      })
 
       // 通过api获取powers_tower
       // const res_pt = await get_powers_tower();
@@ -96,44 +91,25 @@ export default {
 <template>
 
   <svg :width="size.width" :height="size.height" class="svg">
-    <tower-svg-component :selectIndex="selectIndex" :size="size"/>
+    <!--横线和竖线-->
+    <svg-num-component :size="size"/>
+    <!--铁塔-->
+    <svg-tower-component :selectIndex="selectIndex" :size="size"/>
     <!--控制点-->
-    <g v-for="(v,index) in points_across.list" :key="index">
-      <g v-if="index === 1">
-        <circle :cx="v.x" :cy="v.y" r="12" stroke="red" stroke-width="2" fill="none"/>
-        <text :x="v.x-5.5" :y="v.y+6" class="across-1">1</text>
-      </g>
-      <g v-else class="across-g">
-        <circle :cx="v.x" :cy="v.y" r="8" stroke="blue" stroke-width="2" fill="none"/>
-        <text :x="v.x-4" :y="v.y+4" class="across-2">2</text>
-      </g>
-      <text :x="v.x+15" :y="v.y-5" class="text-across">{{ v.across.acrossName }}</text>
-      <text :x="v.x+15" :y="v.y+5" class="text-across-y">{{ filters_m(v.across.acrossY) }}</text>
-    </g>
+    <svg-across-component :size="size"/>
     <!--引绳曲线-->
     <g v-for="(v,index) in points_curve.list" :key="index">
       <path :d="v.str" class="path-small" v-if="index>=selectIndex" fill="none"/>
       <path :d="v.str" class="path-big" v-else fill="none"/>
     </g>
-
   </svg>
 
 </template>
 
 <style scoped>
 .svg {
-  border: 1px solid #409EFF;
+  /*border: 1px solid #409EFF;*/
   /*background: #409EFF;*/
-}
-
-.line {
-  stroke-width: 4;
-  stroke: #409EFF;
-}
-
-.line:hover {
-  stroke: red;
-  cursor: pointer;
 }
 
 .path-small {
@@ -144,26 +120,6 @@ export default {
 .path-big {
   stroke-width: 4;
   stroke: #409EFF;
-}
-
-.text {
-  font-family: Consolas;
-  font-size: 12px;
-}
-
-.text-tower {
-  font-size: 14px;
-  font-weight: bold;
-  color: #033B3D;
-}
-
-.text-type {
-  color: #0D4A3A;
-}
-
-.text-altitude {
-  font-size: 10px;
-  color: #2D5731;
 }
 
 .text-across {
